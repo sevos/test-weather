@@ -1,13 +1,20 @@
 class Api::V1::WeatherController < ApplicationController
+  CACHE_TIMEOUT = 10.minutes
+
   def show
     @weather = WeatherStatus.new(weather_params)
     @weather.save!
+  rescue WeatherService::UnavailableError
+    @weather = WeatherStatus.where(weather_params).
+               where("created_at > ?", CACHE_TIMEOUT.ago).
+               first || WeatherStatus.new
+  rescue ActiveRecord::RecordInvalid
+    render json: {errors: @weather.errors.full_messages}, status: 422
   end
 
   private
 
   def weather_params
-    # here I would use some model for validating the params
     params.permit(:lon, :lat)
   end
 end

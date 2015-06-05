@@ -17,17 +17,15 @@ class WeatherStatus < ActiveRecord::Base
 
   private
 
+  def response
+    super || {}
+  end
+
   def fetch_weather
     self.response = WeatherService.fetch(lon: lon, lat: lat)
   end
 
   def weather_node
     response.fetch("weather", []).first || {}
-
-
-
-
-
-
   end
 end
