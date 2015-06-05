@@ -5,6 +5,8 @@ class Api::V1::WeatherController < ApplicationController
     @weather = WeatherStatus.new(weather_params)
     @weather.save!
   rescue WeatherService::UnavailableError
+    # I would even use geokit-rails gem here to display weather
+    # from a location nearby.
     @weather = WeatherStatus.where(weather_params).
                where("created_at > ?", CACHE_TIMEOUT.ago).
                first || WeatherStatus.new
