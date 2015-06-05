@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lon: 9.99
+  lat: 9.99
+  response: 
+
+two:
+  lon: 9.99
+  lat: 9.99
+  response: 
